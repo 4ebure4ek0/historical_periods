@@ -5,8 +5,20 @@
     transform: translate(-50%, -50%);
     z-index: 2;
 }
-.point{
-    height: 10px;
-    width: 10px;
-    background: rgba(66, 86, 122, 1);
+.cover_circle{
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    width: 530px;
+    height: 530px;
+    .point{
+        height: 4px;
+        width: 4px;
+        background: rgba(66, 86, 122, 1);
+        border-radius: 30px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
 }
