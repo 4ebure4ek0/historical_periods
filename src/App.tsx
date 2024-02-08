@@ -1,6 +1,11 @@
 import React from 'react';
+import Block from './components/block/block';
 
 export default function App()
 {
-    return <h1>Hello, world!</h1>
+    return(
+        <div className='wrap'>
+            <Block />
+        </div>
+    )
 }

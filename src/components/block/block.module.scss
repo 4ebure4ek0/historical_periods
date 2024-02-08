@@ -1,0 +1,44 @@
+.container{
+    width: 100%;
+    height: 100vh;
+    border: 1px solid rgba(66, 86, 122, 0.2);
+    padding: 100px 40px 40px 40px;
+    position: relative;
+    .date_circle{
+        height: 40vh;
+        h1{
+            // height: 70px;
+            color: rgba(66, 86, 122, 1);
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 67.2px;
+            position: relative;
+            &::before{
+                content: '';
+                width: 10px;
+                height: 100%;
+                background: linear-gradient(180deg, #3877EE -5%, #EF5DA8 85%);
+                position: absolute;
+                left: -40px;
+            }
+        }
+    }
+    .horizontal{
+        background-color: rgba(66, 86, 122, 0.2);
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        top: 45%;
+        transform: translateY(-50%);
+    }
+    .vertical{
+        background-color: rgba(66, 86, 122, 0.2);
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
