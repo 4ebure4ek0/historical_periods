@@ -1,0 +1,102 @@
+.container{
+    width: 100%;
+    height: 100vh;
+    border: 1px solid rgba(66, 86, 122, 0.2);
+    padding: 100px 40px 40px 40px;
+    position: relative;
+    .date_circle{
+        height: 60vh;
+        h1{
+            color: rgba(66, 86, 122, 1);
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 67.2px;
+            position: relative;
+            &::before{
+                content: '';
+                width: 5px;
+                height: 100%;
+                background: linear-gradient(180deg, #3877EE -5%, #EF5DA8 85%);
+                position: absolute;
+                left: -40px;
+            }
+        }
+    }
+    .btns_block{
+        .btns_num{
+            font-size: 14px;
+            color: rgba(66, 86, 122, 1);
+            font-weight: 400;
+        }
+        .btns{
+            height: 10vh;
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+            align-items: center;
+            .btn{
+                height: 50px;
+                width: 50px;
+                border: 1px solid rgba(66, 86, 122, 0.3);
+                border-radius: 50px;
+                background-color: transparent;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                &:disabled{
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+    .title_container{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100%;
+        z-index: -1;
+        .dates_title{
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .title{
+                font-weight: 700;
+                line-height: 160px;
+                font-size: 200px;
+                z-index: 4;
+            }
+            .title_blue{
+                color: rgba(93, 95, 239, 1);
+            }
+            .title_red{
+                color: rgba(239, 93, 168, 1);
+            }
+        }
+    }
+    .horizontal{
+        background-color: rgba(66, 86, 122, 0.2);
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        top: 45%;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+    .vertical{
+        background-color: rgba(66, 86, 122, 0.2);
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+    }
+}

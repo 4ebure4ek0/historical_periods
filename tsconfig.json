@@ -5,6 +5,11 @@
       "module": "es6",
       "jsx": "react",
       "noImplicitAny": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": ".",
+      "paths": {
+          "Src/*": ["src/*"],
+          "Components/*": ["src/components/*"]
+      }
     }
   }

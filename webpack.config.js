@@ -28,10 +28,15 @@ module.exports = {
     target,
     plugins,
     entry: {
+        // server:'webpack-dev-server/client?http://localhost:8080/',
         app: path.join(__dirname, 'src', 'index.tsx')
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.tsx', '.js', '.scss'],
+        alias:{
+            Src: path.resolve(__dirname, 'src/'),
+            Components: path.resolve(__dirname, 'src/components'),
+        }
     },
     output: {
         filename: '[name].js',
