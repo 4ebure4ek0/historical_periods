@@ -12,13 +12,30 @@
     transform: translate(-50%, -50%);
     width: 530px;
     height: 530px;
+    z-index: 3;
     .point{
-        height: 4px;
-        width: 4px;
+        height: 6px;
+        width: 6px;
         background: rgba(66, 86, 122, 1);
+        color: rgba(66, 86, 122, 1);
+        border: 1px solid rgba(66, 86, 122, 0.2);
         border-radius: 30px;
         position: absolute;
         transform: translate(-50%, -50%);
-        z-index: 3;
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &::after{
+            content: attr(data-title);
+            font-size: 20px;
+            color: rgba(66, 86, 122, 1);
+            line-height: 30px;
+            font-weight: 400;
+            position: absolute;
+            right: 0;
+            transform: translateX(150%);
+        }
     }
 }
