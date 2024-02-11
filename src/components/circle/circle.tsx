@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import styles from './circle.module.scss'
 import gsap from "gsap";
 import dates from "Src/dates"
@@ -17,7 +17,7 @@ interface Points{
 
 const  Circle = (props:IProps) => {
     const[prevPoint, setPrevPoint] = useState(1)
-    const[deg, setDeg] = useState(245)
+    const[deg, setDeg] = useState(215)
     const[arrPoints, setArrPoints] = useState([])
     const circleRef = useRef(null)
     const firstPointRef = useRef(null)
@@ -31,13 +31,13 @@ const  Circle = (props:IProps) => {
     }
 
     const makeFull = (elem: any) => {
-        gsap.to(elem, { rotate: `-${deg}deg`, duration:'0'})
+        gsap.to(elem, { rotate: `-${deg}deg`, duration:0})
         gsap.to(elem, {scale: 2, background: 'rgba(255, 255, 255, 1)', height: '30px', width: '30px'})
         elem.innerHTML = elem.dataset.id
         elem.dataset.title = dates[elem.dataset.id - 1].name
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         let canvas = canvasRef.current
         canvas.style.width = canvas.offsetWidth + 'px';
         canvas.style.height = canvas.offsetHeight + 'px';
@@ -62,17 +62,17 @@ const  Circle = (props:IProps) => {
     }, [deg])
 
     useEffect(() => {
-        console.log(firstPointRef.current)
         let delta = props.curPoint - prevPoint
         setPrevPoint(props.curPoint)
         setDeg(Number(deg) + (360 / props.points) * delta)
     }, [props.curPoint])
 
-    const handleMouseEnter = (e:any) => {
+    const handleMouseOver = (e:any) => {
         makeFull(e.target)
     }
 
     const handleMouseLeave = (e:any) => {
+        // if(e.target !== firstPointRef.current)
         makeSmall(e.target)
     }
 
@@ -81,14 +81,17 @@ const  Circle = (props:IProps) => {
         props.setCurPoint(e.target.dataset.id)
         setPrevPoint(e.target.dataset.id)
         setDeg(Number(deg) + (360 / props.points) * delta)
-        makeSmall(e.target)
+        firstPointRef.current = e.target
+        makeFull(e.target)
     }
     return(
         <>
             <canvas className={styles.circle} ref={canvasRef} id='circle' width={530} height={530}>
             </canvas>
             <div className={styles.cover_circle} ref={circleRef}>
-                {arrPoints.map((point, n) => <span key={n} data-id={n+1} ref={n + 1 == props.curPoint? firstPointRef : null} className={styles.point} style={{'top': `${point.y}px`, 'left': `${point.x}px`}} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={handleMouseLeave} onClick={handleClick}></span>)}
+                {arrPoints.map((point, n) =>(
+                    <span key={n} data-id={n+1} className={styles.point} style={{'top': `${point.y}px`, 'left': `${point.x}px`}} onMouseOver={(e) => handleMouseOver(e)} onMouseLeave={handleMouseLeave} onClick={handleClick}></span>
+                ))}
             </div>
         </>
     )
