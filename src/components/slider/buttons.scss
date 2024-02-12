@@ -13,3 +13,19 @@
 .swiper-button-prev.swiper-button-disabled, .swiper-button-next.swiper-button-disabled{
     display: none;
 }
+
+.swiper-pagination{
+    display: none;
+}
+
+@media (max-width: 680px){
+    .swiper-pagination{
+        display: block;
+    }
+    .swiper-button-prev, .swiper-button-next{
+        display: none;
+    }
+    .swiper-pagination-bullet-active{
+        background: rgba(66, 86, 122, 1);
+    }
+}

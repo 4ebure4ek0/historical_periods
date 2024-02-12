@@ -37,5 +37,24 @@
             right: 0;
             transform: translateX(150%);
         }
+        &::before{
+            content: '';
+            background-color: transparent;
+            height: 60px;
+            width: 60px;
+            position: absolute;
+        }
+    }
+}
+
+@media (max-width: 680px) {
+    .circle{
+        display: none;
+    }
+    .cover_circle{
+        display: none;
+        .point{
+            display: none;
+        }
     }
 }
