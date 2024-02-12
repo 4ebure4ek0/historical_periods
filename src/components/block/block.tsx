@@ -1,22 +1,39 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styles from './block.module.scss'
 import Circle from "Components/circle/circle"
 import dates from "Src/dates"
 import Slider from "../slider/slider"
+import CountUp from 'react-countup'
 
-export default function Block() {
-    const [point, setPoint] = useState(1)
-    const [title, setTitle] = useState(dates[point - 1].name)
-    const setCurPoint = (pointNum: number) => {
+interface IYears{
+    firstYear: string;
+    secYear: string;
+}
+
+const Block : React.FunctionComponent = () => {
+    const [point, setPoint] = useState<number>(1)
+    const [title, setTitle] = useState<string>(dates[point - 1].name)
+    const [curDate, setCurDate] = useState<IYears>({firstYear: Object.keys(dates[point - 1].events)[0], secYear: Object.keys(dates[point - 1].events)[Object.keys(dates[point - 1].events).length - 1]})
+    const [prevDate, setPrevDate] = useState<IYears>({...curDate})
+
+    const setCurPoint = (pointNum: number) : void => {
         setPoint(pointNum)
         setTitle(dates[pointNum - 1].name)
     }
+    useEffect(() => {
+        setTitle(dates[point - 1].name)
+        setPrevDate({firstYear: curDate.firstYear, secYear: curDate.secYear})
+        setCurDate({firstYear: Object.keys(dates[point - 1].events)[0], secYear: Object.keys(dates[point - 1].events)[Object.keys(dates[point - 1].events).length - 1]})
+    }, [point])
     return (
         <section className={styles.container}>
             <div className={styles.date_circle}>
                 <h1 className={styles.title}>Исторические<br />даты</h1>
                 <Circle title={title} points={dates.length} curPoint={point} setCurPoint={(pointNum) => setCurPoint(pointNum)} />
             </div>
+            <h2 className={styles.theme_title}>{title}</h2>
+            <div className={styles.horizontal} />
+            <div className={styles.vertical} />
             <div className={styles.btns_block}>
                 <span className={styles.btns_num}>0{point} / 0{dates.length}</span>
                 <div className={styles.btns}>
@@ -31,12 +48,12 @@ export default function Block() {
             <Slider events={dates[point - 1].events} />
             <div className={styles.title_container}>
                 <h2 className={styles.dates_title}>
-                    <span className={`${styles.title_blue} ${styles.title}`}>{Object.keys(dates[point - 1].events)[0]} </span> 
-                    <span className={`${styles.title_red} ${styles.title}`}>{Object.keys(dates[point - 1].events)[Object.keys(dates[point - 1].events).length - 1]}</span>
+                    <span className={`${styles.title_blue} ${styles.title}`}><CountUp start={prevDate.firstYear} end={curDate.firstYear} separator='' duration={1}/></span>
+                    <span className={`${styles.title_red} ${styles.title}`}><CountUp start={prevDate.secYear} end={curDate.secYear} separator='' duration={1}/></span>
                 </h2>
             </div>
-            <div className={styles.horizontal} />
-            <div className={styles.vertical} />
         </section>
     )
 }
+
+export default Block

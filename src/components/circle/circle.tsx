@@ -10,51 +10,89 @@ interface IProps{
     setCurPoint: (pointNum:number) => void;
 }
 
-interface Points{
-    'x': number;
-    'y': number
+interface IPoints{
+    x: number;
+    y: number;
 }
 
-const  Circle = (props:IProps) => {
-    const[prevPoint, setPrevPoint] = useState(1)
-    const[deg, setDeg] = useState(215)
-    const[arrPoints, setArrPoints] = useState([])
-    const circleRef = useRef(null)
-    const firstPointRef = useRef(null)
+const  Circle : React.FunctionComponent<IProps> = (props) => {
+    const[touch, setTouch] = useState<boolean>(false)
+    const[prevPoint, setPrevPoint] = useState<number>(1)
+    const[deg, setDeg] = useState<number>(215)
+    const[arrPoints, setArrPoints] = useState<Array<IPoints>>([])
+    const circleRef = useRef<null | HTMLDivElement>(null)
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     let r = 260
 
-    const makeSmall = (elem: any) => {
+    const makeSmall = (elem: EventTarget) : void => {
+        if (!(elem instanceof HTMLSpanElement)) {
+            return;
+        }
         gsap.to(elem, {scale: 1, background: 'rgba(66, 86, 122, 1)', height: '6px', width: '6px'})
         elem.innerHTML = ''
         elem.dataset.title = ''
     }
 
-    const makeFull = (elem: any) => {
+    const makeFull = (elem: EventTarget) : void => {
+        if (!(elem instanceof HTMLSpanElement)) {
+            return;
+        }
         gsap.to(elem, { rotate: `-${deg}deg`, duration:0})
         gsap.to(elem, {scale: 2, background: 'rgba(255, 255, 255, 1)', height: '30px', width: '30px'})
         elem.innerHTML = elem.dataset.id
-        elem.dataset.title = dates[elem.dataset.id - 1].name
+        elem.dataset.title = dates[Number(elem.dataset.id) - 1].name
+    }
+
+    const checkTouch = () : void => {
+        setTouch('ontouchstart' in document.documentElement)
+    }
+
+    const handleMouseOver = (e:React.SyntheticEvent<EventTarget>) : void => {
+        if (!(e.target instanceof HTMLSpanElement)) {
+            return;
+        }
+        if(!touch)
+            makeFull(e.target)
+    }
+
+    const handleMouseLeave = (e:React.SyntheticEvent<EventTarget>) : void => {
+        if (!(e.target instanceof HTMLSpanElement)) {
+            return;
+        }
+        if(!touch)
+            makeSmall(e.target)
+    }
+
+    const handleClick = (e: React.SyntheticEvent<EventTarget>) : void => {
+        if (!(e.target instanceof HTMLSpanElement)) {
+            return;
+        }
+        let delta = Number(e.target.dataset.id) - props.curPoint
+        props.setCurPoint(Number(e.target.dataset.id))
+        setPrevPoint(Number(e.target.dataset.id))
+        setDeg(Number(deg) + (360 / props.points) * delta)
+        makeSmall(e.target)
     }
 
     useLayoutEffect(() => {
         let canvas = canvasRef.current
         canvas.style.width = canvas.offsetWidth + 'px';
         canvas.style.height = canvas.offsetHeight + 'px';
-        const ctx = canvas.getContext("2d") as any
+        const ctx : CanvasRenderingContext2D = canvas.getContext("2d")
         ctx.lineWidth = 1;
         ctx.strokeStyle = 'rgba(66, 86, 122, 0.2)'
         ctx.beginPath()
         ctx.arc(canvasRef.current?.width / 2, canvasRef.current?.height / 2, r, 0, 2*Math.PI);
         ctx.stroke()
         let arr = []
-        let x, y;
+        let x:number, y:number;
         for(let i = 0; i < Math.PI * 2; i += Math.PI * 2 / props.points){
             x = canvasRef.current.width / 2 + r * Math.sin(i);
             y = canvasRef.current.height / 2 + r * Math.cos(i);
             arr.push({'x': x, 'y': y})
         }
         setArrPoints([...arr])
+        checkTouch()
     }, [])
 
     useEffect(() => {
@@ -66,24 +104,6 @@ const  Circle = (props:IProps) => {
         setPrevPoint(props.curPoint)
         setDeg(Number(deg) + (360 / props.points) * delta)
     }, [props.curPoint])
-
-    const handleMouseOver = (e:any) => {
-        makeFull(e.target)
-    }
-
-    const handleMouseLeave = (e:any) => {
-        // if(e.target !== firstPointRef.current)
-        makeSmall(e.target)
-    }
-
-    const handleClick = (e: any) => {
-        let delta = e.target.dataset.id - props.curPoint
-        props.setCurPoint(e.target.dataset.id)
-        setPrevPoint(e.target.dataset.id)
-        setDeg(Number(deg) + (360 / props.points) * delta)
-        firstPointRef.current = e.target
-        makeFull(e.target)
-    }
     return(
         <>
             <canvas className={styles.circle} ref={canvasRef} id='circle' width={530} height={530}>

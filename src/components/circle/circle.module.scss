@@ -46,3 +46,15 @@
         }
     }
 }
+
+@media (max-width: 680px) {
+    .circle{
+        display: none;
+    }
+    .cover_circle{
+        display: none;
+        .point{
+            display: none;
+        }
+    }
+}
